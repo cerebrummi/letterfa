@@ -1,5 +1,7 @@
 package common;
 
+import java.util.ArrayDeque;
+
 import enums.Letter;
 
 public class LetterFA
@@ -10,7 +12,7 @@ public class LetterFA
    private int walksetBn = 4;
    private String walksetBPn = "M";
 
-   private int offset = 6;
+   private int offset = 0;
    StringBuilder walksetCPn = new StringBuilder(Letter.a.pattern);
 
    private int counterA;
