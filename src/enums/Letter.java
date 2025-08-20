@@ -1,5 +1,7 @@
 package enums;
 
+import java.util.ArrayDeque;
+
 public enum Letter
 {
    a("LMLMMM"), 
@@ -7,10 +9,16 @@ public enum Letter
    c("MMLMMM"), 
    d("MMMMMM");
    
-   public final String pattern;
+   public final ArrayDeque<Character> pattern = new ArrayDeque<Character>();
+   public final String stringPattern;
 
    Letter(String pattern)
    {
-      this.pattern = pattern;
+      for(String symbol : pattern.split(""))
+      {
+         this.pattern.add(symbol.charAt(0));
+      }
+      
+      stringPattern = pattern;
    }
 }

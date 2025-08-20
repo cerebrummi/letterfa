@@ -1,6 +1,10 @@
 package common;
 
 import java.util.ArrayDeque;
+import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.stream.IntStream;
 
 import enums.Letter;
 
@@ -10,10 +14,10 @@ public class LetterFA
     * 4 is the step where letter a has formed.
     */
    private int walksetBn = 4;
-   private String walksetBPn = "M";
+   private Character walksetBPn = 'M';
 
    private int offset = 0;
-   StringBuilder walksetCPn = new StringBuilder(Letter.a.pattern);
+   ArrayDeque<Character> walksetCPn = new ArrayDeque<>(Letter.a.pattern);
 
    private int counterA;
    private int counterB;
@@ -24,51 +28,64 @@ public class LetterFA
    {
       walksetBn++;
 
-      walksetBPn = String.valueOf(walksetCPn.charAt(0));
+      walksetBPn = walksetCPn.peekFirst();
 
       fractalProcessMove();
 
-      if ("L".equalsIgnoreCase(walksetBPn.toString()))
+      if (Character.compare('L', walksetBPn) == 0)
       {
          fractalProcessCopy();
          fractalProcessChange();
       }
 
+      countLetters();
+   }
+
+   private void countLetters()
+   {
       counterA = 0;
       counterB = 0;
       counterC = 0;
       counterD = 0;
 
-      String copyCPn = walksetCPn.toString();
-      String head = copyCPn.substring(0, offset);
+      LinkedList<Character> walksetCPnList = new LinkedList<>();
+      walksetCPnList.addAll(walksetCPn);
+      
       int start = offset;
-      int end = offset + 6;
-      for (; end < copyCPn.length();)
+      int end = 6 - offset;
+      
+      List<Character> head = walksetCPnList.subList(0, start);
+      List<Character> tail = walksetCPnList.subList(walksetCPnList.size() - end, walksetCPnList.size());
+      
+      tail.addAll(head);
+      StringBuilder fullLetter = new StringBuilder();
+      for(char symbol : tail)
       {
-         String letter = copyCPn.substring(start, end);
-         start += 6;
-         end += 6;
-         matchLetter(letter);
+         fullLetter.append(symbol);
       }
-      matchLetter(copyCPn.substring(start) + head);
+      matchLetter(fullLetter.toString());
    }
 
    public void matchLetter(String letter)
    {
-      if (Letter.a.pattern.equals(letter))
+      if (Letter.a.stringPattern.equals(letter))
       {
+         System.out.println("letter " + letter + " n = " + walksetBn);
          counterA++;
       }
-      else if (Letter.b.pattern.equals(letter))
+      else if (Letter.b.stringPattern.equals(letter))
       {
+         System.out.println("letter " + letter + " n = " + walksetBn);
          counterB++;
       }
-      else if (Letter.c.pattern.equals(letter))
+      else if (Letter.c.stringPattern.equals(letter))
       {
+         System.out.println("letter " + letter + " n = " + walksetBn);
          counterC++;
       }
-      else if (Letter.d.pattern.equals(letter))
+      else if (Letter.d.stringPattern.equals(letter))
       {
+         System.out.println("letter " + letter + " n = " + walksetBn);
          counterD++;
       }
       else
@@ -80,33 +97,39 @@ public class LetterFA
 
    private void fractalProcessChange()
    {
-      int index = walksetBn + 1;
-      for (int i = 0; i < walksetCPn.length(); i++)
+      ArrayDeque<Character> changed = new ArrayDeque<>();
+      ArrayList<Character> walksetCPnList = new ArrayList<>();
+      walksetCPnList.addAll(walksetCPn);
+
+      IntStream.range(walksetBn + 1, walksetCPn.size())
+            .allMatch((index) -> findMultiples(index) ? changed.add('M')
+                  : changed.add(walksetCPnList.get(index)));
+   }
+
+   private boolean findMultiples(int index)
+   {
+      if ((index % walksetBn) == 0)
       {
-         if ((index % walksetBn) == 0)
-         {
-            walksetCPn.replace(i, i + 1, "M");
-         }
-         index++;
+         return true;
       }
+
+      return false;
    }
 
    private void fractalProcessCopy()
    {
-
-      String copy = walksetCPn.toString();
+      ArrayDeque<Character> copy = new ArrayDeque<>(walksetCPn);
 
       for (int i = 1; i < walksetBn; i++)
       {
-         walksetCPn.append(copy);
+         walksetCPn.addAll(copy);
       }
    }
 
    private void fractalProcessMove()
    {
-      String firstSymbol = walksetCPn.substring(0, 1);
-      walksetCPn.append(firstSymbol);
-      walksetCPn.deleteCharAt(0);
+      char firstSymbol = walksetCPn.pollFirst();
+      walksetCPn.add(firstSymbol);
 
       offset--;
       if (offset < 0)
@@ -142,6 +165,6 @@ public class LetterFA
 
    public Integer getPatternSize()
    {
-      return walksetCPn.length();
+      return walksetCPn.size();
    }
 }
