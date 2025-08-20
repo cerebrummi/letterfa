@@ -7,15 +7,10 @@ public enum Letter
    c("MMLMMM"), 
    d("MMMMMM");
    
-   final private String pattern;
+   public final String pattern;
 
    Letter(String pattern)
    {
       this.pattern = pattern;
-   }
-
-   public String getPattern()
-   {
-      return pattern;
    }
 }
