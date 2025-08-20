@@ -10,7 +10,11 @@ import enums.Letter;
 
 public class StartLetterFa
 {
-   private final static int NUMBER_OF_STEPS = 19;
+   /**
+    * max number of steps = 18
+    * otherwise the length of a string is exceeded
+    */
+   private final static int NUMBER_OF_STEPS = 17;
 
    private static HashMap<String, Integer> counter = new HashMap<>();
 

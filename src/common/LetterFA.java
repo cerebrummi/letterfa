@@ -1,9 +1,12 @@
 package common;
 
-import java.util.ArrayDeque;
-
 import enums.Letter;
 
+/** A fractal algorithm shows prime number patterning.
+ * 
+ * @author heeren Heeren, B. (2025). A fractal algorithm shows prime number
+ *         patterning. Zenodo. https://doi.org/10.5281/zenodo.16829092
+ */
 public class LetterFA
 {
    /**
