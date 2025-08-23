@@ -1,1 +1,0 @@
-memberSearchIndex = [{"p":"common","c":"SFA","l":"printWalksets()"},{"p":"common","c":"SFA","l":"SFA()","u":"%3Cinit%3E()"},{"p":"common","c":"SFA","l":"step()"}];updateSearchResults();
